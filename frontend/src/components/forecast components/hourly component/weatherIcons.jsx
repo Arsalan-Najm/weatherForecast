@@ -10,25 +10,16 @@ import {
 	BsCloudSun,
 	BsCloudFog,
 } from 'react-icons/bs';
-export const options = {
-	weekday: 'long',
-	year: 'numeric',
-	month: 'long',
-	day: '2-digit',
-	hour: 'numeric',
-	hour12: true,
-};
-
 function WeatherIcons() {
 	const { forecast } = useContext(WeatherContext);
 	return (
 		<div className='relative m-auto w-full my-4 scroll overflow-x-scroll whitespace-nowrap scrollbar-hide  place-items-center items-center md:min-h-[100px]'>
 			{forecast.slice(0, 12)?.map((fore) => {
-				let date = new Date(fore.dt_txt).toLocaleDateString('en', options);
+				let date = new Date(fore.dt_txt).getHours() % 12 || 12;
 				return (
 					<div className='inline-block text-center border-r-2 px-6 border-main '>
 						<span className='text-white font-semibold'>
-							{date.slice(date.lastIndexOf('at'))}
+							{date >= 12 ? <h1>at {date} PM</h1> : <h1>at {date} AM</h1>}
 						</span>
 						{fore.weather?.map((wea, i) =>
 							wea.main === 'Clouds' ? (
